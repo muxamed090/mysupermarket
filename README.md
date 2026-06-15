@@ -93,3 +93,4 @@ User.create({ name: 'Admin', email: 'admin@supermarket.so', password: 'admin123'
 - ✅ Noocyada (categories) iyo keenayaasha (suppliers)
 - ✅ Xaaladda kaydka + digniinta badeecadaha yar
 "# mysupermarket" 
+"# mysupermarket" 
