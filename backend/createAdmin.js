@@ -1,40 +1,38 @@
 const mongoose = require('mongoose')
-const dotenv = require('dotenv')
-const User = require('./models/User')
+const bcrypt = require('bcryptjs')
+require('dotenv').config()
 
-dotenv.config()
+const uri = process.env.MONGODB_URI
+console.log('Mongo URI:', uri)
 
 async function createAdmin() {
   try {
-    console.log('Mongo URI:', process.env.MONGODB_URI)
+    await mongoose.connect(uri)
+    console.log('✅ MongoDB waa la xidday')
 
-    await mongoose.connect(process.env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 30000,
-    })
+    const User = require('./models/User')
 
-    const exists = await User.findOne({
-      email: 'admin@supermarket.so'
-    })
-
+    const exists = await User.findOne({ email: 'admin@supermarket.so' })
     if (exists) {
-      console.log('✅ Admin hore ayuu u jiraa')
-      process.exit()
+      console.log('⚠️  Admin horay ayuu u jiray:', exists.email)
+      process.exit(0)
     }
 
-    await User.create({
+    const admin = await User.create({
       name: 'Admin',
       email: 'admin@supermarket.so',
       password: 'admin123',
-      role: 'admin'
+      role: 'admin',
+      isActive: true
     })
 
-    console.log('✅ Admin waa la abuuray')
-    console.log('Email: admin@supermarket.so')
-    console.log('Password: admin123')
-
-    process.exit()
+    console.log('✅ Admin waa la abuuray!')
+    console.log('   Email:   ', admin.email)
+    console.log('   Password: admin123')
+    console.log('   Role:    ', admin.role)
+    process.exit(0)
   } catch (err) {
-    console.error(err)
+    console.error('Error:', err.message)
     process.exit(1)
   }
 }
