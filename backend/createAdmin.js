@@ -6,7 +6,11 @@ dotenv.config()
 
 async function createAdmin() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI)
+    console.log('Mongo URI:', process.env.MONGODB_URI)
+
+    await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 30000,
+    })
 
     const exists = await User.findOne({
       email: 'admin@supermarket.so'
