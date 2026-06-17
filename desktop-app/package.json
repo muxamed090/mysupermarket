@@ -1,0 +1,46 @@
+{
+  "name": "mysupermarket-desktop",
+  "version": "1.0.0",
+  "description": "MySupermarket - Maamulka Dukaanka (Desktop App)",
+  "main": "main.js",
+  "author": "MySupermarket",
+  "scripts": {
+    "start": "electron .",
+    "build-frontend": "cd ../frontend && npm install && npm run build && xcopy /E /I /Y dist ..\\desktop-app\\frontend-build",
+    "build-win": "electron-builder --win",
+    "build-portable": "electron-builder --win portable",
+    "dist": "electron-builder --win nsis portable",
+    "full-build": "npm run build-frontend && npm run dist"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.mysupermarket.app",
+    "productName": "MySupermarket",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "icon.ico",
+      "frontend-build/**/*"
+    ],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MySupermarket"
+    }
+  }
+}
